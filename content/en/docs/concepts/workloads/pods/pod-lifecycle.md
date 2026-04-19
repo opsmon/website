@@ -12,6 +12,10 @@ in the `Pending` [phase](#pod-phase), moving through `Running` if at least one
 of its primary containers starts OK, and then through either the `Succeeded` or
 `Failed` phases depending on whether any container in the Pod terminated in failure.
 
+While a Pod runs, the kubelet manages containers and translates the Pod's spec
+for the container runtime. The kubelet also manages executing
+[probes](#container-probes) that track the health of your application.
+
 Like individual application containers, Pods are considered to be relatively
 ephemeral (rather than durable) entities. Pods are created, assigned a unique
 ID ([UID](/docs/concepts/overview/working-with-objects/names/#uids)), and scheduled
@@ -25,10 +29,14 @@ plane marks the Pods for removal after a timeout period.
 
 ## Pod lifetime
 
-Whilst a Pod is running, the kubelet is able to restart containers to handle some
-kind of faults. Within a Pod, Kubernetes tracks different container
+Whilst a Pod is running, the kubelet is able to restart containers to handle
+some kind of faults. Within a Pod, Kubernetes tracks different container
 [states](#container-states) and determines what action to take to make the Pod
-healthy again.
+healthy again. This is done in a [polling
+loop](/docs/reference/node/kubelet-sync-loop/) that periodically reconciles the
+desired state (a Pod spec) with the actual state of the running containers.
+Because of this polling mechanism, the status seen in the API (like `kubectl get
+pod`) might have a slight delay compared to the instant reality on the node.
 
 In the Kubernetes API, Pods have both a specification and an actual status. The
 status for a Pod object consists of a set of [Pod conditions](#pod-conditions).
@@ -129,11 +137,16 @@ A Pod is granted a term to terminate gracefully, which defaults to 30 seconds.
 You can use the flag `--force` to [terminate a Pod by force](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced).
 {{< /note >}}
 
-Since Kubernetes 1.27, the kubelet transitions deleted Pods, except for
-[static Pods](/docs/tasks/configure-pod-container/static-pod/) and
-[force-deleted Pods](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced)
-without a finalizer, to a terminal phase (`Failed` or `Succeeded` depending on
-the exit statuses of the pod containers) before their deletion from the API server.
+Since Kubernetes 1.27, the kubelet transitions deleted Pods to a terminal phase
+(`Failed` or `Succeeded` depending on the exit statuses of the pod containers)
+before their deletion from the API server, with two exceptions:
+
+* [static Pods](/docs/tasks/configure-pod-container/static-pod/) (which are
+managed directly by the kubelet and represented by {{< glossary_tooltip
+text="mirror Pods" term_id="mirror-pod" >}}) 
+*  [force-deleted
+Pods](/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination-forced)
+without a finalizer
 
 If a node dies or is disconnected from the rest of the cluster, Kubernetes
 applies a policy for setting the `phase` of all Pods on the lost node to Failed.
@@ -793,7 +806,9 @@ Each probe must define exactly one of these four mechanisms:
 : Performs an HTTP `GET` request against the Pod's IP
   address on a specified port and path. The diagnostic is
   considered successful if the response has a status code
-  greater than or equal to 200 and less than 400.
+  greater than or equal to 200 and less than 400. See
+  [Configure Probes](/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#http-probes)
+  for more information on how the kubelet follows redirects.
 
 `tcpSocket`
 : Performs a TCP check against the Pod's IP address on
@@ -1149,7 +1164,7 @@ When the kubelet restarts, the container statuses are managed differently based 
   the containers `ready` value, after a kubelet restart, to be false.
 
   This legacy behavior was the default for a long time, but caused issue for people using Kubernetes,
-  especially in large scale deployments. Althought the feature gate allows reverting to this legacy
+  especially in large scale deployments. Although the feature gate allows reverting to this legacy
   behavior temporarily, the Kubernetes project recommends that you file a bug report if you encounter problems.
   The `ChangeContainerStatusOnKubeletRestart`
   [feature gate](/docs/reference/command-line-tools-reference/feature-gates/#ChangeContainerStatusOnKubeletRestart)

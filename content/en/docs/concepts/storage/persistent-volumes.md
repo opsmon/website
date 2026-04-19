@@ -55,7 +55,7 @@ offer a variety of PersistentVolumes that differ in more ways than size and acce
 modes, without exposing users to the details of how those volumes are implemented.
 For these needs, there is the _StorageClass_ resource.
 
-See the [detailed walkthrough with working examples](/docs/tasks/configure-pod-container/configure-persistent-volume-storage/).
+See the [detailed walkthrough with working examples](/docs/tutorials/configuration/configure-persistent-volume-storage).
 
 ## Lifecycle of a volume and claim
 
@@ -382,7 +382,7 @@ Support for expanding PersistentVolumeClaims (PVCs) is enabled by default. You c
 the following types of volumes:
 
 * {{< glossary_tooltip text="csi" term_id="csi" >}} (including some CSI migrated
-volme types)
+volume types)
 * flexVolume (deprecated)
 * portworxVolume (deprecated)
 
@@ -972,7 +972,8 @@ possible within one namespace.
 
 A `hostPath` PersistentVolume uses a file or directory on the Node to emulate
 network-attached storage. See
-[an example of `hostPath` typed volume](/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume).
+[an example of `hostPath` typed volume](/docs/tutorials/configuration/configure-persistent-volume-storage/#create-a-persistentvolume).
+
 
 ## Raw Block Volume Support
 
@@ -1083,7 +1084,7 @@ Volume snapshots only support the out-of-tree CSI volume plugins.
 For details, see [Volume Snapshots](/docs/concepts/storage/volume-snapshots/).
 In-tree volume plugins are deprecated. You can read about the deprecated volume
 plugins in the
-[Volume Plugin FAQ](https://github.com/kubernetes/community/blob/master/sig-storage/volume-plugin-faq.md).
+[Volume Plugin FAQ](https://github.com/kubernetes/community/blob/main/sig-storage/volume-plugin-faq.md).
 
 ### Create a PersistentVolumeClaim from a Volume Snapshot {#create-persistent-volume-claim-from-volume-snapshot}
 
@@ -1306,8 +1307,8 @@ and need persistent storage, it is recommended that you use the following patter
 
 ## {{% heading "whatsnext" %}}
 
-* Learn more about [Creating a PersistentVolume](/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolume).
-* Learn more about [Creating a PersistentVolumeClaim](/docs/tasks/configure-pod-container/configure-persistent-volume-storage/#create-a-persistentvolumeclaim).
+* Learn more about [Creating a PersistentVolume](/docs/tutorials/configuration/configure-persistent-volume-storage/#create-a-persistentvolume).
+* Learn more about [Creating a PersistentVolumeClaim](/docs/tutorials/configuration/configure-persistent-volume-storage/#create-a-persistentvolumeclaim).
 * Read the [Persistent Storage design document](https://git.k8s.io/design-proposals-archive/storage/persistent-storage.md).
 
 ### API references {#reference}
