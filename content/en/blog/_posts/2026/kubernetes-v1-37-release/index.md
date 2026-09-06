@@ -1,7 +1,7 @@
 ---
 layout: blog
-title: "Kubernetes v1.37: <Release Name>"
-draft: true
+title: "Kubernetes v1.37: Garhwal"
+date: 2026-08-26
 evergreen: true
 slug: kubernetes-v1-37-release
 author: >
@@ -9,7 +9,7 @@ author: >
 release_announcement:
   minor_version: "1.37"
   themes:
-    - "Release CodeName 1"
+    - "Garhwal"
 ---
 **Editors:** Arsh Sharma, Christopher Tineo, Kirti Goyal, Sophia Ugochukwu, Swathi Rao, Troy Connor
 
@@ -21,9 +21,19 @@ Of those enhancements, 16 have graduated to Stable, 23 have graduated to Beta,
 
 ## Release theme and logo
 
-<!-- Logo image size is recommended to be no more than 2160px -->
+{{< figure src="k8s-v1.37.svg" alt="Kubernetes v1.37 Garhwal release logo: a ringaal-inspired woven frame surrounds snow-capped Himalayan peaks, terraced fields, deodar trees, a winding river, a mountain house marked 1.37, colourful flags, a Himalayan monal, and red buransh flowers with Kubernetes helm symbols at their centres" class="release-logo" >}}
 
-{{< figure src="k8s-1.37.svg" alt="Kubernetes v1.37 <release theme> logo" class="release-logo" >}}
+The theme for Kubernetes v1.37 is **Garhwal** (गढ़वाल, pronounced _gaṛhvāl_), a Himalayan region of Uttarakhand, India. The snow-capped peaks of the Garhwal Himalaya, deodar forests, terraced fields, rivers and streams, and mountain paths shape both the region and the logo. Together, these elements reflect a community in which every layer, route, and contribution is connected.
+
+The logo is imagined as a window into Garhwal's landscape.<sup>1</sup> Inside, terraced fields climb towards the snowy peaks, each level supported by the one below, much as every Kubernetes release depends on work carried forward. A river winds through the valley and gathers mountain streams, reflecting contributions from many SIGs and communities flowing into one project.
+
+The deodar forest represents the wider Kubernetes ecosystem, where distinct projects share common ground and grow side by side. Stonework and woodcraft shape the path and mountain house, placing people at the centre and evoking shared foundations maintained for those who follow. Above the river, colourful flags catch the wind and bring the scene to life.
+
+Encircling the scene is a patterned frame inspired by basketry woven from _ringaal_, a flexible dwarf Himalayan bamboo. Individual strips gain strength when interlaced, just as code, reviews, tests, documentation, and coordination come together to make a release.
+
+Within the frame, the [Himalayan monal](https://en.wikipedia.org/wiki/Himalayan_monal), Uttarakhand's state bird, lives at high altitudes in the Himalaya. Its iridescent plumage holds many colours at once, much as the Kubernetes community brings many skills and perspectives into one project. Flowers of red _buransh_ (_Rhododendron arboreum_), Uttarakhand's state tree, carry Kubernetes helms at their centres, linking a familiar bloom of Garhwal with the symbol shared by the community. The house bears १.३७ (1.37 in Devanagari numerals), grounding the release in the landscape.
+
+<sub>1. Keep looking through the window (the logo). Watch the river flow and the flags catch the wind. In 37 seconds, the landscape reveals its magic. 😉</sub>
 
 ## Spotlight on key updates
 
@@ -31,11 +41,11 @@ Kubernetes v1.37 is packed with new features and improvements. Here are a few se
 
 ### Stable: Resilient watchcache initialization
 
-Kubernetes v1.37 completes the _resilient watch cache initialization_ work: the
+Kubernetes v1.37 completes the work on _resilient watch cache initialization_: the
 `ResilientWatchCacheInitialization` feature gate reached Stable back in v1.34, and in v1.37 the remaining
 `WatchCacheInitializationPostStartHook` gate graduates to Stable and is locked on. It has defaulted to
 enabled since v1.36, hardening the API server at startup and during
-recovery.  Watchcache initialization and reinitialization no longer create the thundering-herd requests against `etcd`, and
+recovery.  Watchcache initialization and reinitialization no longer create a traffic spike of requests against `etcd`, and
 requests are handled gracefully instead of piling up while the cache warms. 
 
 Instead of allowing expensive list and watch requests to overload `etcd` or exhaust API Priority and Fairness capacity, `kube-apiserver` now safely delegates bounded requests and rejects others with HTTP 429 responses. This reduces the risk of control
@@ -75,9 +85,8 @@ This work was done as part of [KEP #5793](https://www.kubernetes.dev/resources/k
 ### Alpha: Pod-level checkpoint and restore
 
 Kubernetes v1.37 introduces Alpha support for **Pod-level** checkpoint and restore,
-extending the CRI with `CheckpointPod` and `RestorePod` RPCs.
-These RPCs allow the kubelet and compatible container runtimes to create a Pod checkpoint and restore a Pod from it.
-To make it work, your container runtime(s) also must implement these new RPCs.
+extending the CRI with `CheckpointPod` and `RestorePod` RPCs, which allow the kubelet and compatible container runtimes to create a Pod checkpoint and restore a Pod from it.
+To use this feature, your container runtime(s) must also implement these new RPCs.
 
 This work was done as part of [KEP #5823](https://www.kubernetes.dev/resources/keps/5823/) led by
 [SIG Node](https://www.kubernetes.dev/community/community-groups/sigs/node/).
@@ -91,7 +100,7 @@ This release includes a total of 16 enhancements promoted to Stable:
 
 ### KYAML
 
-KYAML is a safer and less ambiguous subset of YAML designed specifically for Kubernetes, **not a replacement for it**. Every
+_KYAML_ is a safer and less ambiguous subset of YAML designed specifically for Kubernetes, **not a replacement for it**. Every
 KYAML file is valid YAML, so KYAML is a valid input for any version of `kubectl`, and spec files do not need to be written in
 KYAML for the input to be parsed. Your existing manifests, tooling, and pipelines don't need to change.
 Introduced as an Alpha feature in v1.34 and graduating to Beta in v1.35, KYAML graduates to Stable in v1.37 with conformance
@@ -103,7 +112,7 @@ This work was done as part of [KEP #5295](https://www.kubernetes.dev/resources/k
 
 ### The metrics.k8s.io API
 
-The metrics.k8s.io API graduates to Stable in Kubernetes v1.37 after spending nearly nine years in Beta. The API provides a
+The _metrics.k8s.io_ API graduates to Stable in Kubernetes v1.37 after spending nearly nine years in Beta. The API provides a
 standard way to retrieve CPU and memory usage for pods and nodes, powering widely used Kubernetes features such as the
 HorizontalPodAutoscaler (HPA) and commands like `kubectl top`.
 
@@ -116,7 +125,7 @@ by [SIG Instrumentation](https://www.kubernetes.dev/community/community-groups/s
 
 ### `SELinuxMount` and `SELinuxChangePolicy`
 
-In Kubernetes v1.37, SELinuxMount and `SELinuxChangePolicy` flags reach Stable and are enabled by default: this means that
+In Kubernetes v1.37, `SELinuxMount` and `SELinuxChangePolicy` flags reach Stable and are enabled by default: this means that
 volumes get mounted with `-o context=<label>` (the MountOption default) instead of being recursively relabeled, but only when
 the volume's CSI driver opts in via `.spec.seLinuxMount: true` for the CSIDriver object.
 
@@ -127,7 +136,7 @@ To retain the old behavior for a workload, it is advised to set the `.spec.seLin
 This behavior itself also isn't locked until v1.38, so disabling it cluster-wide remains an option for one more release.
 
 Clusters without SELinux enabled see no effect at all. To learn more, check [SELinux Volume Label Changes goes GA (and likely
-implications in v1.37)](/blog/2026/04/22/breaking-changes-in-selinux-volume-labeling/)
+implications in v1.37)](/blog/2026/04/22/breaking-changes-in-selinux-volume-labeling/).
 
 This work was done as part of [KEP #1710](https://www.kubernetes.dev/resources/keps/1710/) led by [SIG Storage](https://www.kubernetes.dev/community/community-groups/sigs/storage/).
 
@@ -147,7 +156,7 @@ making DRA fully usable for attaching secondary network interfaces to Pods.
 This work was done as part of [KEP #4817](https://www.kubernetes.dev/resources/keps/4817/) led by [SIG Node](https://www.kubernetes.dev/community/community-groups/sigs/node/) and [SIG Network](https://www.kubernetes.dev/community/community-groups/sigs/network/).
 
 
-#### DRA: Handle extended resource requests via DRA Driver
+#### DRA: handle extended resource requests via DRA Driver
 
 DRA Extended Resource support reaches Stable in Kubernetes v1.37. This feature allows DRA drivers to fulfill requests made
 through the traditional _extended resource_ mechanism, such as `abc.example/gpu: 3` in a Pod spec, without requiring a
@@ -159,14 +168,14 @@ This work was done as part of [KEP #5004](https://www.kubernetes.dev/resources/k
 
 #### DRA: device taints and tolerations
 
-Support for taints and tolerations for physical devices managed through DRA is now Stable in Kubernetes v1.37. By default, any available device can be considered for scheduling. This enhancement provides greater control over device scheduling by allowing DRA drivers to mark specific devices as tainted, preventing them from being selected for workloads. Alternatively, cluster administrators can create a DeviceTaintRule to taint devices based on specific selection criteria, such as all devices managed by a particular driver. 
+Support for _taints and tolerations_ for physical devices managed through DRA is now Stable in Kubernetes v1.37. By default, any available device can be considered for scheduling. This enhancement provides greater control over device scheduling by allowing DRA drivers to mark specific devices as tainted, preventing them from being selected for workloads. Alternatively, cluster administrators can create a DeviceTaintRule to taint devices based on specific selection criteria, such as all devices managed by a particular driver. 
 
 This work was done as part of [KEP #5055](https://www.kubernetes.dev/resources/keps/5055/)
 led by [SIG Scheduling](https://www.kubernetes.dev/community/community-groups/sigs/scheduling/).
 
 #### DRA: standard numaNode device attribute {#dra-standard-numanode-device-attribute}
 
-Kubernetes v1.37 defines a new standard NUMA node device attribute. It standardizes
+Kubernetes v1.37 defines a new standard _NUMA node device attribute_. It standardizes
 `resource.kubernetes.io/numaNode` as a shared attribute name for device NUMA node information, allowing devices managed by
 different DRA drivers to be compared based on the same NUMA node. This avoids each driver defining its own attribute name and
 provides a consistent way to identify NUMA placement across devices. The enhancement lands directly as Stable because it is a
@@ -193,7 +202,7 @@ This work was done as part of [KEP #5328](https://www.kubernetes.dev/resources/k
 
 ### Storage version migrator {#storage-version-migrator}
 
-Kubernetes v1.37 sees the StorageVersionMigration API (`storagemigration.k8s.io/v1`) graduate to Stable and become enabled by
+Kubernetes v1.37 sees the _StorageVersionMigration API_ (`storagemigration.k8s.io/v1`) graduate to Stable and become enabled by
 default. It helps migrate existing resources, both built-in and custom, from an older storage version to the new storage
 version after an API upgrade, such as when the preferred storage version changes from `v1beta1` to `v1`. It can also be used to rewrite existing
 data after a change to encryption at rest, so that stale data is stored using the new encryption settings.
@@ -260,7 +269,7 @@ This work was done as part of [KEP #5808](https://www.kubernetes.dev/resources/k
 #### Workload-aware preemption
 
 Kubernetes traditionally performs preemption at the Pod level, which can be inefficient for workloads made up of multiple
-tightly coupled Pods. In Kubernetes v1.37, Workload-aware Preemption graduates to Beta, allowing the scheduler to consider a
+tightly coupled Pods. In Kubernetes v1.37, workload-aware preemption graduates to Beta, allowing the scheduler to consider a
 PodGroup when making preemption decisions. This helps the scheduler consider the workload as a whole when preempting lower
 priority workloads, reducing cases where individual Pods are disrupted without providing enough capacity for the workload to
 make progress.
@@ -333,9 +342,9 @@ This work was done as part of [KEP #5526](https://www.kubernetes.dev/resources/k
 
 The route controller in the cloud-controller-manager library previously reconciled routes on a fixed interval, by default every 10 seconds. This could result in unnecessary requests to infrastructure providers, even when nothing had changed and could also delay route updates when a new Node is added. 
 
-Watch-based route controller reconciliation graduated to beta in Kubernetes v1.37. This release also adds observability for this work: the route controller's Alpha `route_sync_total` metric gains two labels, `trigger` (`periodic` or `node_change`) and `outcome` (`changed`, `noop`, or `error`), so operators can see whether periodic reconciliation is actually correcting route drift or just running as a no-op, and can track failed reconciles.
+_Watch-based route controller reconciliation_ graduated to beta in Kubernetes v1.37. This release also adds observability for this work: the route controller's Alpha `route_sync_total` metric gains two labels, `trigger` (`periodic` or `node_change`) and `outcome` (`changed`, `noop`, or `error`), so operators can see whether periodic reconciliation is actually correcting route drift or just running as a no-op, and can track failed reconciles.
 
-With watch-based route controller reconciliation the route controller can reconcile routes from watch events instead of waiting for the next fixed interval: a reconciliation can start as soon as relevant Node changes occur, such as a Node being added or removed or when its addresses or assigned Pod CIDRs change. A less frequent periodic reconciliation still runs to catch outdated routes and keep the state consistent. This behavior sits behind the CloudControllerManagerWatchBasedRoutesReconciliation feature gate and is disabled by default, so the transition has not changed default behavior.
+With watch-based route controller reconciliation, the route controller can reconcile routes from watch events instead of waiting for the next fixed interval: a reconciliation can start as soon as relevant Node changes occur, such as a Node being added or removed or when its addresses or assigned Pod CIDRs change. A less frequent periodic reconciliation still runs to catch outdated routes and keep the state consistent. This behavior sits behind the `CloudControllerManagerWatchBasedRoutesReconciliation` feature gate and is disabled by default, so the transition has not changed default behavior.
 
 This reduces unnecessary requests to infrastructure providers while allowing routes for newly added Nodes to be reconciled sooner. The change does not alter the route reconciliation logic itself; it changes when reconciliation is triggered.
 
@@ -349,14 +358,13 @@ When a CSI driver provisions a new volume on demand, the scheduler had no way to
 
 This was a gap for local storage, as an admin might want pods landing on the node with the most free capacity to leave room for a later volume expansion or on the node with the least (but still sufficient) free capacity to bin-pack workloads and cut down on the number of nodes a cloud cluster needs to run.
 
-
 Kubernetes v1.37 graduates storage capacity scoring for dynamic provisioning to Beta behind the `StorageCapacityScoring`
-feature gate. First introduced in Alpha all the way back in v1.33, and now consolidating (and deprecating) the older
+feature gate. First introduced in Alpha in v1.33, this feature consolidates (and deprecates) the older
 `VolumeCapacityPriority` gate from [KEP #1845](https://www.kubernetes.dev/resources/keps/1845/). When enabled, the
 VolumeBinding plugin's `Score` extension point reads `CSIStorageCapacity` objects published by a driver's external
 provisioner sidecar and scores nodes for dynamic provisioning the same way it already does for static bindings. Admins choose
 the strategy via the `Shape` setting in `VolumeBindingArgs`, defaulting to "prefer the node with the maximum allocatable" so
-there's headroom for expansion later. 
+there is room for expansion later. 
 
 The feature depends solely on the `StorageCapacityScoring` gate: scoring for statically
 bound PVs runs as soon as it's enabled, independent of any CSI driver. A driver only needs `StorageCapacity: true` on its
@@ -380,9 +388,9 @@ This work was done as part of [KEP #5030](https://www.kubernetes.dev/resources/k
 
 ### Report last used time on a PVC
 
-`PersistentVolumeClaims` tend to outlive the workloads that created them. When an app gets deleted or migrated, and its PVC just sits there, consuming storage and increasing costs. Today Kubernetes gives cluster admins no way to tell how long a PVC has been sitting idle; the `kubelet` is the only component that really knows when a volume was last mounted, but nothing surfaces that information at the API level, so admins are left guessing which PVCs are actually safe to clean up.
+`PersistentVolumeClaims` tend to outlive the workloads that created them. When an app gets deleted or migrated, its PVC remains behind, consuming storage and increasing costs. 
 
-Kubernetes v1.37 graduates PVC "last used" tracking to Beta behind the `PersistentVolumeClaimUnusedSinceTime` feature gate, which shipped disabled by default in Alpha (v1.36) and is now enabled by default in Beta. The feature adds a new `Unused` condition to `PersistentVolumeClaimStatus`, managed by the existing PVC protection controller: `Status=True (Reason=NoPodsUsingPVC)` once the last non-terminal Pod referencing the PVC goes away, and back to `Status=False (Reason=PodUsingPVC)` as soon as a Pod starts referencing it again. The condition's `lastTransitionTime` doubles as an "unused since" timestamp, so admins can query how long a PVC has actually been idle without Kubernetes tracking which Pod used it last or making any deletion decision itself; that's left entirely to the admin. One thing worth noting is that the timestamp reflects when the controller observed no Pods using the PVC, not the exact moment the volume unmounted at the infrastructure level, so the reported idle time may run a little short of the true figure but should never overstate it.
+Kubernetes v1.37 graduates PVC "last used" tracking to Beta behind the `PersistentVolumeClaimUnusedSinceTime` feature gate, which shipped disabled by default in Alpha (v1.36) and is now enabled by default. The feature adds a new `Unused` condition to `PersistentVolumeClaimStatus`, managed by the existing PVC protection controller: `Status=True (Reason=NoPodsUsingPVC)` once the last non-terminal Pod referencing the PVC goes away, and back to `Status=False (Reason=PodUsingPVC)` as soon as a Pod starts referencing it again. The condition's `lastTransitionTime` doubles as an "unused since" timestamp, so admins can query how long a PVC has actually been idle without Kubernetes tracking which Pod used it last or making any deletion decision itself; that's left entirely to the admin. One thing worth noting is that the timestamp reflects when the controller observed no Pods using the PVC, not the exact moment the volume unmounted at the infrastructure level, so the reported idle time may run a little short of the true figure but should never overstate it.
 
 This work was done as part of [KEP #5541](https://www.kubernetes.dev/resources/keps/5541/) led by [SIG Storage](https://www.kubernetes.dev/community/community-groups/sigs/storage/).
 
@@ -451,7 +459,6 @@ This work was done as part of [KEP #5793](https://www.kubernetes.dev/resources/k
 
 ### Improved handling for undecryptable resources 
 
-
 Kubernetes stores resources in etcd, where encryption at rest can be used to protect sensitive data. However, when encrypted
 resources can no longer be decrypted, for example because the encryption key is unavailable, the API server cannot read or
 manage those resources normally. This can leave resources in the cluster that cannot be accessed through the Kubernetes API,
@@ -514,7 +521,7 @@ This work was done as part of [KEP #5963](https://www.kubernetes.dev/resources/k
 
 ### Scheduler preemption for in-place Pod resize {#scheduler-preemption-in-place-pod-resize}
 
-Kubernetes v1.37 introduces _scheduler preemption for in-place pod resize_, behind  the (opt-in, Alpha) `InPlacePodVerticalScalingSchedulerPreemption` feature gate. This change addresses an important feature gap that remained after the core [pn-place Pod vertical scaling](/docs/concepts/workloads/pods/pod-lifecycle/#pod-resize-inplace) feature graduated to Stable: if a running pod requested additional resources that exceeded the node's available capacity, `kubelet` marked the
+Kubernetes v1.37 introduces _scheduler preemption for in-place pod resize_, behind  the (opt-in, Alpha) `InPlacePodVerticalScalingSchedulerPreemption` feature gate. This change addresses an important feature gap that remained after the core [in-place Pod vertical scaling](/docs/concepts/workloads/pods/pod-lifecycle/#pod-resize-inplace) feature graduated to Stable: if a running pod requested additional resources that exceeded the node's available capacity, `kubelet` marked the
 request as `Deferred`, leaving the pod waiting until sufficient resources became available on the node. With this
 enhancement, the Kubernetes control plane can actively free up capacity on a fully-utilized node and preempt lower-priority
 workloads, enabling the pending in-place resizes of critical, higher-priority applications to succeed.
@@ -563,7 +570,7 @@ This work was done as part of [KEP #6012](https://www.kubernetes.dev/resources/k
 
 #### Workload Aware Scheduling Controller APIs
 
-As an Alpha feature Kubernetes v1.37 provides common framework for integrating workload controllers (such as JobSet, TrainJob, LWS, and RayJob, along with core workloads such as `Job`) with _Workload-aware Scheduling_ (WAS). The framework provides reusable `scheduling.k8s.io` API primitives, such as _topology constraints_ and _disruption policies_, along with shared libraries that handle the creation of scheduling resources. This allows controllers to expose WAS features natively within their APIs in a consistent way without implementing the same scheduling logic separately.
+As an Alpha feature Kubernetes v1.37 provides a common framework for integrating workload controllers (such as JobSet, TrainJob, LWS, and RayJob, along with core workloads such as `Job`) with _Workload-aware Scheduling_ (WAS).
 
 The framework provides reusable `scheduling.k8s.io` API primitives, such as _topology constraints_ and _disruption policies_,
 along with shared libraries that handle the creation of scheduling resources. This allows controllers to expose WAS features
@@ -609,6 +616,7 @@ revision. When the bug triggered, the affected Pod could end up stuck in a Crash
 
 ### Improved `nftables` performance
 
+kube-proxy now uses the kernel’s netlink interface for nftables rule operations, bypassing the `nft` command-line tool. This makes kube-proxy more efficient when inspecting and managing its nftables rules, improving rule-management performance.
 
 ### Context handling and contextual logging in client-go
 
@@ -742,7 +750,7 @@ The CNCF K8s [DevStats](https://k8s.devstats.cncf.io/d/11/companies-contributing
 This includes everything from individual contributions to the number of companies that are contributing and is an
 illustration of the depth and breadth of effort that goes into evolving this ecosystem.
 
-In the v1.37 release cycle, which ran for 15 weeks from May 18th, 2026, to August 26th, 2026, contributions to Kubernetes reached a maximum of 212 different companies and 1,709 individuals at any given time.
+In the v1.37 release cycle, which ran for 15 weeks from May 18th, 2026, to August 26th, 2026, contributions to Kubernetes reached a maximum of 212 different companies and 1,754 individuals.
 
 Source for this data: 
 
@@ -752,10 +760,10 @@ Source for this data:
 By contribution we mean when someone makes a commit, code review, comment, creates an issue or PR, reviews a PR (including
 blogs and documentation), or comments on issues and PRs.
 
-If you are interested in contributing, see our [getting started](https://www.kubernetes.dev/docs/guide/#getting-started)
+If you are interested in contributing, check out our [getting started](https://www.kubernetes.dev/docs/guide/#getting-started)
 page. 
 
-### Event update
+### Event updates
 
 Explore the upcoming KubeCons worldwide:
 
@@ -764,7 +772,9 @@ Explore the upcoming KubeCons worldwide:
 - [KubeCon + CloudNativeCon North America](https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/):
   November 9–12, 2026, in Salt Lake City, United States
 
-Kubernetes Community Days (KCDs) taking place for the rest of 2026:
+Explore the upcoming Kubernetes Community Days (KCDs) taking place for the rest of 2026:
+
+#### September 2026
 
 - [KCD x Ceph x OpenInfra Day Korea](https://community2.cncf.io/events/details/cncf-kcd-south-korea-presents-kcd-x-ceph-x-openinfra-day-korea-2026/):
   September 1, 2026, in Seoul, South Korea
@@ -778,18 +788,31 @@ Kubernetes Community Days (KCDs) taking place for the rest of 2026:
   September 26, 2026, in São Paulo, Brazil
 - [KCD Sofia](https://community2.cncf.io/events/details/cncf-kcd-sofia-presents-kubernetes-community-days-sofia-2026/):
   September 29, 2026, in Sofia, Bulgaria
+
+#### October 2026
+
 - [KCD UK – Edinburgh](https://community2.cncf.io/events/details/cncf-kcd-uk-presents-kubernetes-community-days-uk-edinburgh-2026/):
   October 19–20, 2026, in Edinburgh, United Kingdom
 - [KCD Nigeria](https://community2.cncf.io/events/details/cncf-kcd-nigeria-presents-kcd-nigeria-2026-telling-the-african-cloud-native-story/):
   October 24, 2026, in Lagos, Nigeria
+
+#### November 2026
+
 - [KCD Porto](https://community2.cncf.io/events/details/cncf-kcd-porto-presents-kcd-porto-2026-collab-with-devops-days-portugal/):
   November 19–20, 2026, in Porto, Portugal
+- [KCD Hangzhou](https://sessionize.com/kcd-hangzhou-2026/):
+  November 28, 2026, in Hangzhou, China
+
+#### December 2026
+
 - [KCD Suisse Romande](https://community2.cncf.io/events/details/cncf-kcd-suisse-romande-presents-kcd-suisse-romande-2026/):
-  December 9–10, 2026, in Meyrin, Switzerland
+ December 9–10, 2026, in Meyrin, Switzerland
 - [KCD Provence](https://community2.cncf.io/events/details/cncf-kcd-provence-presents-kcd-provence-2026/):
-  December 10, 2026, in Aix-en-Provence, France
+ December 10, 2026, in Aix-en-Provence, France
 - [KCD Florida – Miami](https://community2.cncf.io/events/details/cncf-kcd-florida-presents-kcd-florida-2026-miami/):
   December 11, 2026, in Miami, United States
+
+You can find the latest event details at the [CNCF Events Page](https://community2.cncf.io/events/#/list). 
 
 ### Upcoming release webinar
 
